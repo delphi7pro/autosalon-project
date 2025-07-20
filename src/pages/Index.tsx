@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Icon from '@/components/ui/icon';
 
 const Index = () => {
@@ -23,7 +24,21 @@ const Index = () => {
       type: 'Седан',
       brand: 'BMW',
       image: '/img/35658ce2-0e0f-41a4-a417-c35990cabc29.jpg',
-      features: ['Кожаный салон', 'Подогрев сидений', 'Навигация']
+      features: ['Кожаный салон', 'Подогрев сидений', 'Навигация', 'Климат-контроль', 'Bluetooth', 'USB'],
+      engine: '2.0L турбо',
+      power: '184 л.с.',
+      acceleration: '7.1 сек',
+      consumption: '6.8 л/100км',
+      drive: 'Задний привод',
+      color: 'Серебристый металлик',
+      description: 'Элегантный и динамичный BMW 3 Series представляет собой идеальное сочетание спортивности и комфорта. Этот седан оснащен передовыми технологиями и обеспечивает превосходное качество вождения.',
+      specs: {
+        dimensions: '4709×1827×1442 мм',
+        trunk: '480 л',
+        weight: '1570 кг',
+        fuelTank: '59 л',
+        maxSpeed: '235 км/ч'
+      }
     },
     {
       id: 2,
@@ -36,7 +51,21 @@ const Index = () => {
       type: 'Кроссовер',
       brand: 'Audi',
       image: '/img/b6e0d970-0bdc-442d-af99-f0a51ff0863e.jpg',
-      features: ['Полный привод', 'Панорамная крыша', 'LED фары']
+      features: ['Полный привод', 'Панорамная крыша', 'LED фары', 'Virtual Cockpit', 'Кожаный салон', 'Подогрев сидений'],
+      engine: '2.0L TFSI',
+      power: '249 л.с.',
+      acceleration: '6.3 сек',
+      consumption: '7.4 л/100км',
+      drive: 'Полный привод quattro',
+      color: 'Красный металлик',
+      description: 'Audi Q5 - это премиальный кроссовер, который сочетает в себе элегантность, технологии и превосходные внедорожные возможности. Оснащен системой полного привода quattro для максимального контроля.',
+      specs: {
+        dimensions: '4663×1893×1659 мм',
+        trunk: '550 л',
+        weight: '1765 кг',
+        fuelTank: '70 л',
+        maxSpeed: '237 км/ч'
+      }
     },
     {
       id: 3,
@@ -49,9 +78,26 @@ const Index = () => {
       type: 'Купе',
       brand: 'Mercedes',
       image: '/img/8da9e761-2e1b-453f-9c89-1afd4df236ee.jpg',
-      features: ['AMG пакет', 'Премиум звук', 'Автопилот']
+      features: ['AMG пакет', 'Премиум звук', 'Автопилот', 'Панорамная крыша', 'Ambient освещение', 'Массаж сидений'],
+      engine: '2.0L турбо',
+      power: '255 л.с.',
+      acceleration: '6.0 сек',
+      consumption: '7.2 л/100км',
+      drive: 'Задний привод',
+      color: 'Жемчужно-белый',
+      description: 'Mercedes C-Class Coupe воплощает в себе спортивную элегантность и роскошь. Этот автомобиль создан для тех, кто ценит стиль, производительность и передовые технологии.',
+      specs: {
+        dimensions: '4751×1810×1421 мм',
+        trunk: '400 л',
+        weight: '1615 кг',
+        fuelTank: '66 л',
+        maxSpeed: '250 км/ч'
+      }
     }
   ];
+
+  const brands = ['BMW', 'Audi', 'Mercedes'];
+  const types = ['Седан', 'Кроссовер', 'Купе'];
 
   const filteredCars = cars.filter(car => {
     return (
@@ -60,6 +106,151 @@ const Index = () => {
       (selectedType === 'all' || car.type === selectedType)
     );
   });
+
+  const CarDetailModal = ({ car }: { car: any }) => (
+    <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogHeader>
+        <DialogTitle className="text-2xl font-bold text-secondary">{car.name}</DialogTitle>
+      </DialogHeader>
+      
+      <div className="space-y-6">
+        <div className="relative">
+          <img 
+            src={car.image} 
+            alt={car.name}
+            className="w-full h-80 object-cover rounded-lg"
+          />
+          <Badge className="absolute top-4 right-4 bg-primary text-lg px-3 py-1">
+            {car.price} ₽
+          </Badge>
+        </div>
+
+        <Tabs defaultValue="overview" className="w-full">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="overview">Обзор</TabsTrigger>
+            <TabsTrigger value="specs">Характеристики</TabsTrigger>
+            <TabsTrigger value="features">Опции</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="overview" className="space-y-4">
+            <p className="text-gray-600 leading-relaxed">{car.description}</p>
+            
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <div className="flex items-center space-x-2 mb-2">
+                  <Icon name="Zap" size={16} className="text-primary" />
+                  <span className="font-semibold">Двигатель</span>
+                </div>
+                <p className="text-sm text-gray-600">{car.engine}</p>
+                <p className="text-sm text-gray-600">{car.power}</p>
+              </div>
+              
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <div className="flex items-center space-x-2 mb-2">
+                  <Icon name="Activity" size={16} className="text-primary" />
+                  <span className="font-semibold">Разгон</span>
+                </div>
+                <p className="text-sm text-gray-600">0-100 км/ч</p>
+                <p className="text-sm text-gray-600">{car.acceleration}</p>
+              </div>
+              
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <div className="flex items-center space-x-2 mb-2">
+                  <Icon name="Settings" size={16} className="text-primary" />
+                  <span className="font-semibold">Расход</span>
+                </div>
+                <p className="text-sm text-gray-600">Смешанный цикл</p>
+                <p className="text-sm text-gray-600">{car.consumption}</p>
+              </div>
+            </div>
+          </TabsContent>
+          
+          <TabsContent value="specs" className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <h4 className="font-semibold mb-3 text-secondary">Технические характеристики</h4>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Год выпуска:</span>
+                    <span>{car.year}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Двигатель:</span>
+                    <span>{car.engine}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Мощность:</span>
+                    <span>{car.power}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Привод:</span>
+                    <span>{car.drive}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Коробка передач:</span>
+                    <span>{car.transmission}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Макс. скорость:</span>
+                    <span>{car.specs.maxSpeed}</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div>
+                <h4 className="font-semibold mb-3 text-secondary">Габариты и вес</h4>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Размеры (Д×Ш×В):</span>
+                    <span>{car.specs.dimensions}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Багажник:</span>
+                    <span>{car.specs.trunk}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Масса:</span>
+                    <span>{car.specs.weight}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Топливный бак:</span>
+                    <span>{car.specs.fuelTank}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Цвет:</span>
+                    <span>{car.color}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </TabsContent>
+          
+          <TabsContent value="features" className="space-y-4">
+            <h4 className="font-semibold text-secondary">Комплектация и опции</h4>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              {car.features.map((feature: string, index: number) => (
+                <div key={index} className="flex items-center space-x-2">
+                  <Icon name="Check" size={16} className="text-green-600" />
+                  <span className="text-sm">{feature}</span>
+                </div>
+              ))}
+            </div>
+          </TabsContent>
+        </Tabs>
+
+        <div className="flex space-x-4 pt-4 border-t">
+          <Button className="flex-1 bg-primary hover:bg-primary/90">
+            <Icon name="Phone" size={16} className="mr-2" />
+            Записаться на тест-драйв
+          </Button>
+          <Button variant="outline" className="flex-1">
+            <Icon name="Calculator" size={16} className="mr-2" />
+            Рассчитать кредит
+          </Button>
+        </div>
+      </div>
+    </DialogContent>
+  );
 
   return (
     <div className="min-h-screen bg-background">
@@ -102,28 +293,26 @@ const Index = () => {
                   className="w-full"
                 />
               </div>
-              <Select value={selectedBrand} onValueChange={setSelectedBrand}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Марка" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Все марки</SelectItem>
-                  <SelectItem value="BMW">BMW</SelectItem>
-                  <SelectItem value="Audi">Audi</SelectItem>
-                  <SelectItem value="Mercedes">Mercedes</SelectItem>
-                </SelectContent>
-              </Select>
-              <Select value={selectedType} onValueChange={setSelectedType}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Тип кузова" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Все типы</SelectItem>
-                  <SelectItem value="Седан">Седан</SelectItem>
-                  <SelectItem value="Кроссовер">Кроссовер</SelectItem>
-                  <SelectItem value="Купе">Купе</SelectItem>
-                </SelectContent>
-              </Select>
+              <select 
+                value={selectedBrand} 
+                onChange={(e) => setSelectedBrand(e.target.value)}
+                className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+              >
+                <option value="all">Все марки</option>
+                {brands.map(brand => (
+                  <option key={brand} value={brand}>{brand}</option>
+                ))}
+              </select>
+              <select 
+                value={selectedType} 
+                onChange={(e) => setSelectedType(e.target.value)}
+                className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+              >
+                <option value="all">Все типы</option>
+                {types.map(type => (
+                  <option key={type} value={type}>{type}</option>
+                ))}
+              </select>
               <Button className="bg-primary hover:bg-primary/90 w-full">
                 <Icon name="Search" size={16} className="mr-2" />
                 Найти
@@ -185,9 +374,14 @@ const Index = () => {
                   </div>
 
                   <div className="flex gap-2">
-                    <Button className="flex-1 bg-primary hover:bg-primary/90">
-                      Подробнее
-                    </Button>
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button className="flex-1 bg-primary hover:bg-primary/90">
+                          Подробнее
+                        </Button>
+                      </DialogTrigger>
+                      <CarDetailModal car={car} />
+                    </Dialog>
                     <Button variant="outline" size="icon">
                       <Icon name="Heart" size={16} />
                     </Button>
