@@ -10,7 +10,6 @@ const Index = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedBrand, setSelectedBrand] = useState('');
   const [selectedType, setSelectedType] = useState('');
-  const [priceRange, setPriceRange] = useState('');
 
   const cars = [
     {
@@ -164,7 +163,7 @@ const Index = () => {
                       {car.year} год
                     </div>
                     <div className="flex items-center">
-                      <Icon name="Fuel" size={14} className="mr-2" />
+                      <Icon name="Zap" size={14} className="mr-2" />
                       {car.fuel}
                     </div>
                     <div className="flex items-center">
@@ -172,7 +171,7 @@ const Index = () => {
                       {car.transmission}
                     </div>
                     <div className="flex items-center">
-                      <Icon name="Gauge" size={14} className="mr-2" />
+                      <Icon name="Activity" size={14} className="mr-2" />
                       {car.mileage} км
                     </div>
                   </div>
@@ -218,7 +217,7 @@ const Index = () => {
               <Card key={index} className="text-center hover:shadow-lg transition-shadow">
                 <CardContent className="pt-8">
                   <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Icon name={service.icon as any} size={24} className="text-primary" />
+                    <Icon name={service.icon} size={24} className="text-primary" />
                   </div>
                   <h4 className="text-lg font-semibold text-secondary mb-2">{service.title}</h4>
                   <p className="text-gray-600 text-sm">{service.description}</p>
