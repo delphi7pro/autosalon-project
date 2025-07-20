@@ -8,8 +8,8 @@ import Icon from '@/components/ui/icon';
 
 const Index = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedBrand, setSelectedBrand] = useState('');
-  const [selectedType, setSelectedType] = useState('');
+  const [selectedBrand, setSelectedBrand] = useState('all');
+  const [selectedType, setSelectedType] = useState('all');
 
   const cars = [
     {
@@ -56,8 +56,8 @@ const Index = () => {
   const filteredCars = cars.filter(car => {
     return (
       car.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      (selectedBrand === '' || car.brand === selectedBrand) &&
-      (selectedType === '' || car.type === selectedType)
+      (selectedBrand === 'all' || car.brand === selectedBrand) &&
+      (selectedType === 'all' || car.type === selectedType)
     );
   });
 
@@ -107,7 +107,7 @@ const Index = () => {
                   <SelectValue placeholder="Марка" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Все марки</SelectItem>
+                  <SelectItem value="all">Все марки</SelectItem>
                   <SelectItem value="BMW">BMW</SelectItem>
                   <SelectItem value="Audi">Audi</SelectItem>
                   <SelectItem value="Mercedes">Mercedes</SelectItem>
@@ -118,7 +118,7 @@ const Index = () => {
                   <SelectValue placeholder="Тип кузова" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Все типы</SelectItem>
+                  <SelectItem value="all">Все типы</SelectItem>
                   <SelectItem value="Седан">Седан</SelectItem>
                   <SelectItem value="Кроссовер">Кроссовер</SelectItem>
                   <SelectItem value="Купе">Купе</SelectItem>
